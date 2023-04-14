@@ -4,6 +4,7 @@ import 'package:code_competence/component/drawerlist.dart';
 import 'package:code_competence/component/teksField.dart';
 import 'package:code_competence/style/color.dart';
 import 'package:code_competence/style/fontstyle.dart';
+import 'package:code_competence/style/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,9 @@ class LuxuriateCoffeScreen extends StatefulWidget {
 }
 
 class _LuxuriateCoffeScreenState extends State<LuxuriateCoffeScreen> {
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final messege = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -40,8 +44,7 @@ class _LuxuriateCoffeScreenState extends State<LuxuriateCoffeScreen> {
               letterSpacing: 2, fontSize: 32, fontWeight: FontWeight.w500),
         ),
       ),
-      drawer: Drawer(
-          backgroundColor: ColorStyle().white, child: Drawerlist()),
+      drawer: Drawer(backgroundColor: ColorStyle().white, child: Drawerlist()),
       body: ListView(
         children: [
           Padding(
@@ -79,13 +82,25 @@ class _LuxuriateCoffeScreenState extends State<LuxuriateCoffeScreen> {
                           .primary
                           .copyWith(fontSize: 24, fontWeight: FontWeight.w400)),
                 ),
-                const InputField(hinText: 'name'),
+                InputField(
+                  hinText: 'name',
+                  controler: name,
+                ),
                 sizeBox,
-                const InputField(hinText: 'email'),
+                InputField(
+                  hinText: 'email',
+                  controler: email,
+                ),
                 sizeBox,
-                const InputField(hinText: "messege"),
+                InputField(hinText: "messege", controler: messege),
                 sizeBox,
-                const PrimaryButton(text: 'Submit'),
+                PrimaryButton(
+                    height: 43,
+                    width: 180,
+                    text: 'Submit',
+                    onPressed: () {
+                      _showAllterDialog(context);
+                    }),
                 sizeBox,
                 const Divider(),
                 Row(
@@ -119,6 +134,48 @@ class _LuxuriateCoffeScreenState extends State<LuxuriateCoffeScreen> {
           )
         ],
       ),
+    );
+  }
+
+  void _showAllterDialog(BuildContext context) {
+    AlertDialog alertDialog = AlertDialog(
+      content: Container(
+        margin: EdgeInsets.all(10),
+        height: 200.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Your Messege',
+                style: TextCustome()
+                    .primary
+                    .copyWith(fontWeight: FontWeight.w600, fontSize: 18)),
+            Text('Name     : ${name.text}', style: TextCustome().primary),
+            Text('Email    : ${email.text}', style: TextCustome().primary),
+            Text('Messege  : ${messege.text}', style: TextCustome().primary),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SecondaryButton(
+                    text: 'back',
+                    onPressed: () => Navigator.of(context).pop(),
+                    height: 32,
+                    width: 100),
+                PrimaryButton(
+                  height: 32,
+                  width: 100,
+                  text: "Send",
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      context: context,
+      builder: (context) => alertDialog,
     );
   }
 }
